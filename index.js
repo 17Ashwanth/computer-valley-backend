@@ -17,6 +17,8 @@ const cors = require('cors')
 
  cvServer.use(routes)
 
+ cvServer.use('/uploads',express.static('./uploads'))
+
  
  const PORT =4000 || process.env.PORT
  cvServer.listen(PORT,()=>{

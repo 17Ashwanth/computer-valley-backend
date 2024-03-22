@@ -19,7 +19,8 @@ const jwt = require('jsonwebtoken')
            username,
            address,
            gender,
-           password
+           password,
+           profile:""
        })
        
        await newUser.save()
@@ -58,5 +59,22 @@ exports.login = async(req,res)=>{
     }catch(err)
     {
         res.status(401).json(`login failed due to  ${err}`)
+    }
+}
+
+// edit profile
+
+exports.editUser = async(req,res)=>{
+    const userId = req.payload
+    const {username,address,gender,password,profile} = req.body;
+
+    const profileImage = req.file?req.file.filename:profile
+    try {
+        const updateUser = await users.findByIdAndUpdate({_id:userId},{username,address,gender,password,profile:profileImage},{new:true})
+
+        await updateUser.save()
+        res.status(200).json(updateUser)
+    } catch (err) {
+        res.status(401).json(err)
     }
 }
